@@ -1,5 +1,6 @@
 import numpy as np
-from scipy.sparse.linalg import eigsh
+# from scipy.sparse.linalg import eigsh
+from scipy.linalg import eigh
 
 
 I = np.eye(4)
@@ -41,8 +42,8 @@ def create_H1(t, mu, U):
 if __name__ == '__main__':
 
     t = 1.
-    mu = 0.0
-    U = 0.
+    mu = 1.
+    U = 1.
 
     H1 = create_H1(t, mu, U)
     H2 = create_H2(t)
@@ -58,5 +59,9 @@ if __name__ == '__main__':
 
     print('H4.shape', H4.shape)
 
-    eigenvalues, eigenvectors = eigsh(H4, k=10)
+    # eigenvalues, eigenvectors = eigsh(H4, k=10, which='SM')
+    # eigenvalues, eigenvectors = eigsh(H4, k=6)
+    eigenvalues, eigenvectors = eigh(H4)
     print('eigenvalues: ', eigenvalues)
+    print(eigenvectors.shape)
+    print(eigenvectors[:, -1])

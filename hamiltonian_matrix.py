@@ -28,8 +28,8 @@ n_down = c_down_dagger @ c_down
 
 if __name__ == '__main__':
     t = 1.
-    mu = 0.0
-    U = 0.
+    mu = 1.
+    U = 1.
 
     # print('n_up:\n', n_up)
     # print('n_down:\n', n_down)
@@ -49,5 +49,5 @@ if __name__ == '__main__':
 
     print('H4.shape', H4.shape)
 
-    eigenvalues, eigenvectors = eigsh(H4, k=10)
+    eigenvalues, eigenvectors = eigsh(H4, k=256)
     print('eigenvalues: ', eigenvalues)
