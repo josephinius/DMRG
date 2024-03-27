@@ -5,6 +5,7 @@ from scipy.linalg import eigh
 
 I = np.eye(4)
 
+# TODO: check all signs in h2
 h2 = np.matrix([
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -42,8 +43,8 @@ def create_H1(t, mu, U):
 if __name__ == '__main__':
 
     t = 1.
-    mu = 1.
-    U = 1.
+    mu = 2 * t
+    U = 0.
 
     H1 = create_H1(t, mu, U)
     H2 = create_H2(t)
@@ -57,11 +58,19 @@ if __name__ == '__main__':
          np.kron(np.kron(np.kron(I, I), H1), I) + np.kron(np.kron(np.kron(I, I), I), H1) + \
          np.kron(np.kron(H2, I), I) + np.kron(np.kron(I, H2), I) + np.kron(np.kron(I, I), H2)
 
-    print('H4.shape', H4.shape)
+    # print('H4.shape', H4.shape)
 
     # eigenvalues, eigenvectors = eigsh(H4, k=10, which='SM')
     # eigenvalues, eigenvectors = eigsh(H4, k=6)
-    eigenvalues, eigenvectors = eigh(H4)
-    print('eigenvalues: ', eigenvalues)
-    print(eigenvectors.shape)
-    print(eigenvectors[:, -1])
+    # eigenvalues, eigenvectors = eigh(H4)
+    # print('eigenvalues: ', eigenvalues)
+    # print(eigenvectors.shape)
+    # print(eigenvectors[:, -1])
+
+    # H2_full = H2 + np.kron(H1, I) + np.kron(I, H1)
+    # print('H2_full.shape', H2_full.shape)
+
+    # eigenvalues, eigenvectors = eigh(H2_full)
+    # print(eigenvalues)
+    # psi_zero = eigenvectors[:, 0]
+    # print(psi_zero)
