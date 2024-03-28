@@ -29,6 +29,17 @@ n_up = c_up_dagger @ c_up  # number operator for spin up
 n_down = c_down_dagger @ c_down  # number operator for spin down
 
 
+def create_H1(t, mu, U):
+    H1 = (2 * t - mu) * (n_up + n_down) + U * (n_up @ n_down)
+    return H1
+
+
+def create_H2(t):
+    H2 = - t * (np.kron(c_up_dagger, c_up) + np.kron(c_up, c_up_dagger) +
+                np.kron(c_down_dagger, c_down) + np.kron(c_down, c_down_dagger))
+    return H2
+
+
 if __name__ == '__main__':
     t = 1.  # hopping parameter
     mu = 2 * t  # chemical potential
@@ -37,9 +48,8 @@ if __name__ == '__main__':
     # print('n_up:\n', n_up)
     # print('n_down:\n', n_down)
 
-    H1 = (2 * t - mu) * (n_up + n_down) + U * (n_up @ n_down)
-    H2 = - t * (np.kron(c_up_dagger, c_up) + np.kron(c_up, c_up_dagger) +
-                np.kron(c_down_dagger, c_down) + np.kron(c_down, c_down_dagger))
+    H1 = create_H1(t, mu, U)
+    H2 = create_H2(t)
 
     # print('H1.shape', H1.shape)
     # print(H1)
