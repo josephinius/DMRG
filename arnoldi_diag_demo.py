@@ -8,8 +8,8 @@ from hamiltonian_matrix import create_H1, create_H2
 if __name__ == '__main__':
 
     t = 1.  # hopping parameter
-    mu = 1  # 2 * t  # chemical potential
-    U = 1  # 0.  # on-site Coulomb interaction energy
+    mu = 2 * t  # chemical potential
+    U = 0.  # on-site Coulomb interaction energy
 
     H1 = create_H1(t, mu, U)
     H2 = create_H2(t)
