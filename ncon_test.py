@@ -7,6 +7,8 @@ r"""
 
 Test case:
 
+result_{i j k l} =
+
            i   j    k   l
             \ /      \ /
             (T1)    (T2)
