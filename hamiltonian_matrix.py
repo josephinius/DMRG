@@ -7,7 +7,7 @@ from scipy.linalg import eigh
 I = np.eye(4)
 
 # annihilation operator for spin up
-c_up = np.matrix([
+c_up = np.array([
     [0, 1, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 1],
@@ -15,7 +15,7 @@ c_up = np.matrix([
 ])
 
 # annihilation operator for spin down
-c_down = np.matrix([
+c_down = np.array([
     [0, 0, 1, 0],
     [0, 0, 0, 1],
     [0, 0, 0, 0],
@@ -42,8 +42,8 @@ def create_H2(t):
 
 if __name__ == '__main__':
     t = 1.  # hopping parameter
-    mu = 2 * t  # chemical potential
-    U = 0.  # on-site Coulomb interaction energy
+    mu = 1  # 2 * t  # chemical potential
+    U = 1  # 0.  # on-site Coulomb interaction energy
 
     # print('n_up:\n', n_up)
     # print('n_down:\n', n_down)
@@ -81,7 +81,7 @@ if __name__ == '__main__':
          np.kron(np.kron(H2, I), I) + np.kron(np.kron(I, H2), I) + np.kron(np.kron(I, I), H2)
 
     eigenvalues, eigenvectors = eigh(H4)
-    print('eigenvalues: ', eigenvalues[:10])
+    print('eigenvalues: ', eigenvalues[:6])
     psi_zero = eigenvectors[:, 0]
 
     N4 = np.kron(np.kron(n_up, I), np.kron(I, I)) + np.kron(np.kron(I, n_up), np.kron(I, I)) + \
