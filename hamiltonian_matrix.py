@@ -126,7 +126,28 @@ if __name__ == '__main__':
 
     print('n: ', n)
 
+    # Creating the spin representation of the state in a different way
+
+    astate2 = []
+
+    for i in range(4 ** 4):
+        ii = []
+        a = i
+        for _ in range(4):
+            ii.append(a % 4)
+            a //= 4
+        ii = reversed(ii)
+        if abs(psi_zero[i]) > 1.e-14:
+            astate2.append([psi_zero[i], tuple(ii)])
+
     for x in astate:
         print("%.8f - %d%d%d%d" % (x[0], *x[1]))
+
+    for x1, x2 in zip(astate, astate2):
+        if abs(x1[0] - x2[0]) > 1.e-14 or x1[1] != x2[1]:
+            print(x1[0], x2[0])
+            print(x1[1], x2[1])
+            print("not same!")
+            break
 
     print(sum(psi_zero ** 2))  # checking normalisation
