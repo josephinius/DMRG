@@ -151,3 +151,4 @@ if __name__ == '__main__':
             break
 
     print(sum(psi_zero ** 2))  # checking normalisation
+
