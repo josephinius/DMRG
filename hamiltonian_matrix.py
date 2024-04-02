@@ -1,7 +1,14 @@
 import numpy as np
 from scipy.linalg import eigh
-# from scipy.sparse.linalg import eigsh
-# import ncon
+
+"""
+
+ |0> = (1, 0, 0, 0)  # no particle
+ |1> = (0, 1, 0, 0)  # electron spin up
+ |2> = (0, 0, 1, 0)  # electron spin down
+ |3> = (0, 0, 0, 1)  # two electrons (up & down)
+
+"""
 
 
 I = np.eye(4)
@@ -42,8 +49,8 @@ def create_H2(t):
 
 if __name__ == '__main__':
     t = 1.  # hopping parameter
-    mu = 1  # 2 * t  # chemical potential
-    U = 1  # 0.  # on-site Coulomb interaction energy
+    mu = 2 * t  # chemical potential
+    U = 0.  # on-site Coulomb interaction energy
 
     # print('n_up:\n', n_up)
     # print('n_down:\n', n_down)
@@ -101,3 +108,25 @@ if __name__ == '__main__':
 
     s = np.dot(left, S4 @ right)
     print('s: ', s)
+
+    psi_zero[np.abs(psi_zero) < 1.e-14] = 0
+    print(psi_zero)
+
+    n = 0  # Number of particles counted "manually"
+    astate = []
+    particles = {0: 0, 1: 1, 2: 1, 3: 2}
+    for i1 in range(4):
+        for i2 in range(4):
+            for i3 in range(4):
+                for i4 in range(4):
+                    i = 64 * i1 + 16 * i2 + 4 * i3 + i4
+                    if abs(psi_zero[i]) > 1.e-14:
+                        astate.append([psi_zero[i], (i1, i2, i3, i4)])
+                    n += (psi_zero[i] ** 2) * (particles[i1] + particles[i2] + particles[i3] + particles[i4])
+
+    print('n: ', n)
+
+    for x in astate:
+        print("%.8f - %d%d%d%d" % (x[0], *x[1]))
+
+    print(sum(psi_zero ** 2))  # checking normalisation

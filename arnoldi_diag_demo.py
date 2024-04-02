@@ -48,5 +48,8 @@ if __name__ == '__main__':
 
     dim_H = H_L.shape[0] * H_l.shape[0] * H_r.shape[0] * H_R.shape[0]
 
-    eigenvalues = eigsh(LinearOperator((dim_H, dim_H), matvec=custom_multiply), k=6, which='SA', return_eigenvectors=False)
+    eigenvalues, eigenvectors = eigsh(LinearOperator((dim_H, dim_H), matvec=custom_multiply), k=6, which='SA')
     print(eigenvalues)
+    psi_zero = eigenvectors[:, 0]
+    psi_zero[np.abs(psi_zero) < 1.e-14] = 0
+    print(psi_zero)
