@@ -51,9 +51,9 @@ if __name__ == '__main__':
     H_lr = H2
     H_rR = H2
 
-    system_size = 4
+    system_size = 4  # initial system size
 
-    for iter_count in range(100):
+    for iter_count in range(1000):
 
         custom_multiply = create_custom_multiply(H_L, H_l, H_r, H_R, H_Ll, H_lr, H_rR)
 
