@@ -170,6 +170,7 @@ if __name__ == '__main__':
     print(eigenvalues[0] / 6)  # -1.164653069144978
 
     """
+    # H8 takes too much of memory... 
     H8 = np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(H1, I), I), I), I), I), I), I) + \
          np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, H1), I), I), I), I), I), I) + \
          np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, I), H1), I), I), I), I), I) + \
@@ -185,9 +186,7 @@ if __name__ == '__main__':
          np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, I), I), I), H2), I), I) + \
          np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, I), I), I), I), H2), I) + \
          np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, I), I), I), I), I), H2)
-
     print(H8.shape)
-
     eigenvalues, eigenvectors = eigh(H8)
     print('eigenvalues: ', eigenvalues[:6] / 8)
     print(eigenvalues[0] / 8)

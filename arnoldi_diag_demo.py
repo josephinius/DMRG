@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.sparse.linalg import eigsh, LinearOperator
-from scipy.linalg import eigh
+# from scipy.linalg import eigh
 from ncon import ncon
 
 from hamiltonian_matrix import create_H1, create_H2, I, c_up, c_down, c_up_dagger, c_down_dagger
@@ -53,6 +53,10 @@ if __name__ == '__main__':
 
     system_size = 4  # initial system size
 
+    file_name = f"data_xi{xi}.txt"
+    with open(file_name, 'w') as f:
+        f.write('# iter\tenergy\n')
+
     for iter_count in range(1000):
 
         custom_multiply = create_custom_multiply(H_L, H_l, H_r, H_R, H_Ll, H_lr, H_rR)
@@ -61,8 +65,12 @@ if __name__ == '__main__':
 
         eigenvalues, eigenvectors = eigsh(LinearOperator((dim_H, dim_H), matvec=custom_multiply), k=6, which='SA')
         # print(eigenvalues / system_size)
-        print(iter_count, eigenvalues[0] / system_size)
-        psi_zero = eigenvectors[:, 0]
+        # print(iter_count, eigenvalues[0] / system_size)  # ground state energy per site
+        gs_energy = eigenvalues[0] / system_size
+        with open(file_name, 'a') as f:
+            f.write('%d\t%.15f\n' % (iter_count, gs_energy))
+
+        psi_zero = eigenvectors[:, 0]  # ground state
         # psi_zero[np.abs(psi_zero) < 1.e-14] = 0
         # print(psi_zero)
 
