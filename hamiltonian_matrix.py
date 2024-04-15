@@ -110,7 +110,7 @@ if __name__ == '__main__':
     print('s: ', s)
 
     psi_zero[np.abs(psi_zero) < 1.e-14] = 0
-    print(psi_zero)
+    # print(psi_zero)
 
     n = 0  # Number of particles counted "manually"
     astate = []
@@ -132,16 +132,15 @@ if __name__ == '__main__':
 
     for i in range(4 ** 4):
         ii = []
-        a = i
         for _ in range(4):
-            ii.append(a % 4)
-            a //= 4
+            ii.append(i % 4)
+            i //= 4
         ii = reversed(ii)
         if abs(psi_zero[i]) > 1.e-14:
             astate2.append([psi_zero[i], tuple(ii)])
 
-    for x in astate:
-        print("%.8f - %d%d%d%d" % (x[0], *x[1]))
+    # for x in astate:
+    #    print("%.8f - %d%d%d%d" % (x[0], *x[1]))
 
     for x1, x2 in zip(astate, astate2):
         if abs(x1[0] - x2[0]) > 1.e-14 or x1[1] != x2[1]:
@@ -152,3 +151,44 @@ if __name__ == '__main__':
 
     print(sum(psi_zero ** 2))  # checking normalisation
 
+    H6 = np.kron(np.kron(np.kron(np.kron(np.kron(H1, I), I), I), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(I, H1), I), I), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(I, I), H1), I), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(I, I), I), H1), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(I, I), I), I), H1), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(I, I), I), I), I), H1) + \
+         np.kron(np.kron(np.kron(np.kron(H2, I), I), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(I, H2), I), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(I, I), H2), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(I, I), I), H2), I) + \
+         np.kron(np.kron(np.kron(np.kron(I, I), I), I), H2)
+
+    print(H6.shape)
+
+    eigenvalues, eigenvectors = eigh(H6)
+    print('eigenvalues: ', eigenvalues[:6] / 6)
+    print(eigenvalues[0] / 6)  # -1.164653069144978
+
+    """
+    H8 = np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(H1, I), I), I), I), I), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, H1), I), I), I), I), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, I), H1), I), I), I), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, I), I), H1), I), I), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, I), I), I), H1), I), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, I), I), I), I), H1), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, I), I), I), I), I), H1), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, I), I), I), I), I), I), H1) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(H2, I), I), I), I), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, H2), I), I), I), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, I), H2), I), I), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, I), I), H2), I), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, I), I), I), H2), I), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, I), I), I), I), H2), I) + \
+         np.kron(np.kron(np.kron(np.kron(np.kron(np.kron(I, I), I), I), I), I), H2)
+
+    print(H8.shape)
+
+    eigenvalues, eigenvectors = eigh(H8)
+    print('eigenvalues: ', eigenvalues[:6] / 8)
+    print(eigenvalues[0] / 8)
+    """
