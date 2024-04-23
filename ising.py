@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.sparse.linalg import eigsh, LinearOperator
+from scipy.linalg import eigh
 from ncon import ncon
 
 from arnoldi_diag_demo import create_custom_multiply
@@ -26,8 +27,8 @@ I = np.eye(2)
 
 if __name__ == '__main__':
 
-    xi = 100
-    h = 1.e-14
+    xi = 32
+    h = 0.e-14
 
     sx_l, sy_l, sz_l = sx, sy, sz
     sx_r, sy_r, sz_r = sx, sy, sz
@@ -55,21 +56,22 @@ if __name__ == '__main__':
 
     for iter_count in range(1000):
 
-        print('iter_count', iter_count)
+        # print('iter_count', iter_count)
 
         custom_multiply = create_custom_multiply(H_L, H_l, H_r, H_R, H_Ll, H_lr, H_rR)
 
         dim_H = H_L.shape[0] * H_l.shape[0] * H_r.shape[0] * H_R.shape[0]
 
-        eigenvalues, eigenvectors = eigsh(LinearOperator((dim_H, dim_H), matvec=custom_multiply), k=6, which='SA')
+        eigenvalues, eigenvectors = eigsh(LinearOperator((dim_H, dim_H), matvec=custom_multiply), k=1, which='SA')
         # print(eigenvalues / system_size)
         # print(iter_count, eigenvalues[0] / system_size)  # ground state energy per site
         gs_energy = eigenvalues[0] / system_size
+        print("%d\t%.14f" % (iter_count, gs_energy))
         with open(file_name, 'a') as f:
             f.write('%d\t%.15f\n' % (iter_count, gs_energy))
 
         psi_zero = eigenvectors[:, 0]  # ground state
-        # psi_zero[np.abs(psi_zero) < 1.e-14] = 0
+        psi_zero[np.abs(psi_zero) < 1.e-16] = 0
         # print(psi_zero)
 
         # Density matrix construction
@@ -90,14 +92,13 @@ if __name__ == '__main__':
         dm_left = np.reshape(dm_left, (dim_L * dim_l, dim_L * dim_l))
         dm_right = np.reshape(dm_right, (dim_R * dim_r, dim_R * dim_r))
         # print(dm_left.shape)
-        # eigenvalues, eigenvectors = eigh(dm_left)
-        # print(eigenvalues)
-        eigenvalues, eigenvectors = eigsh(dm_left, k=xi, which='LA')
+        eigenvalues, eigenvectors = eigh(dm_left)
+        # eigenvalues, eigenvectors = eigsh(dm_left, k=xi, which='LA')
         # print('eigenvalues: ', eigenvalues)
         u_left = np.fliplr(eigenvectors)
 
-        # _, eigenvectors = eigh(dm_right)
-        eigenvalues, eigenvectors = eigsh(dm_right, k=xi, which='LA')
+        eigenvalues, eigenvectors = eigh(dm_right)
+        # eigenvalues, eigenvectors = eigsh(dm_right, k=xi, which='LA')
         u_right = np.fliplr(eigenvectors)
 
         u_left = u_left[:, :xi]
