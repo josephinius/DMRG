@@ -30,7 +30,7 @@ def create_custom_multiply(H_L, H_l, H_r, H_R, H_Ll, H_lr, H_rR):
 
 if __name__ == '__main__':
 
-    xi = 100
+    xi = 32
 
     t = 1.  # hopping parameter
     mu = 2 * t  # chemical potential
@@ -71,7 +71,7 @@ if __name__ == '__main__':
             f.write('%d\t%.15f\n' % (iter_count, gs_energy))
 
         psi_zero = eigenvectors[:, 0]  # ground state
-        psi_zero[np.abs(psi_zero) < 1.e-16] = 0
+        # psi_zero[np.abs(psi_zero) < 1.e-16] = 0
         # print(psi_zero)
 
         # Density matrix construction
@@ -85,7 +85,7 @@ if __name__ == '__main__':
         # print(psi_zero.shape)
 
         dm_left = ncon([psi_zero, np.conj(psi_zero)], [[-1, -2, 1, 2], [-3, -4, 1, 2]])
-        dm_right = ncon([psi_zero, np.conj(psi_zero)], [[2, 1, -2, -1], [2, 1, -4, -3]])
+        dm_right = ncon([psi_zero, np.conj(psi_zero)], [[1, 2, -1, -2], [1, 2, -3, -4]])
 
         # Diagonalize dm
 
@@ -104,8 +104,6 @@ if __name__ == '__main__':
 
         u_left = u_left[:, :xi]
         u_right = u_right[:, :xi]
-
-        # print(u_left.shape)
 
         # Expand the block
 

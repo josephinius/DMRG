@@ -10,28 +10,33 @@ from arnoldi_diag_demo import create_custom_multiply
 sx = np.array([
     [0, 1],
     [1, 0]
-], dtype=complex)
-
-sy = np.array([
-    [0, -1j],
-    [1j, 0]
-], dtype=complex)
+])
 
 sz = np.array([
     [1, 0],
     [0, -1]
+])
+
+"""
+sy = np.array([
+    [0, -1j],
+    [1j, 0]
 ], dtype=complex)
+"""
 
 I = np.eye(2)
 
 
 if __name__ == '__main__':
 
-    xi = 32
-    h = 0.e-14
+    xi = 16
+    h = 1.e-0
 
-    sx_l, sy_l, sz_l = sx, sy, sz
-    sx_r, sy_r, sz_r = sx, sy, sz
+    # sx_l, sy_l, sz_l = sx, sy, sz
+    # sx_r, sy_r, sz_r = sx, sy, sz
+
+    sx_l, sz_l = sx, sz
+    sx_r, sz_r = sx, sz
 
     H1 = - h * sx
     # H2 = - np.kron(sx, sx) - np.kron(sy, sy) - np.kron(sz, sz)
@@ -71,7 +76,7 @@ if __name__ == '__main__':
             f.write('%d\t%.15f\n' % (iter_count, gs_energy))
 
         psi_zero = eigenvectors[:, 0]  # ground state
-        psi_zero[np.abs(psi_zero) < 1.e-16] = 0
+        # psi_zero[np.abs(psi_zero) < 1.e-16] = 0
         # print(psi_zero)
 
         # Density matrix construction
@@ -85,7 +90,7 @@ if __name__ == '__main__':
         # print(psi_zero.shape)
 
         dm_left = ncon([psi_zero, np.conj(psi_zero)], [[-1, -2, 1, 2], [-3, -4, 1, 2]])
-        dm_right = ncon([psi_zero, np.conj(psi_zero)], [[2, 1, -2, -1], [2, 1, -4, -3]])
+        dm_right = ncon([psi_zero, np.conj(psi_zero)], [[1, 2, -1, -2], [1, 2, -3, -4]])
 
         # Diagonalize dm
 
