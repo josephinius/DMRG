@@ -30,7 +30,7 @@ def create_custom_multiply(H_L, H_l, H_r, H_R, H_Ll, H_lr, H_rR):
 
 if __name__ == '__main__':
 
-    xi = 32
+    xi = 5
 
     t = 1.  # hopping parameter
     mu = 2 * t  # chemical potential
@@ -57,7 +57,13 @@ if __name__ == '__main__':
     with open(file_name, 'w') as f:
         f.write('# iter\tenergy\n')
 
+    gs_energy_new = 0
+    gs_energy = 1
+
+    # iter_count = 0
+
     for iter_count in range(1000):
+        # while abs(gs_energy - gs_energy_new) > 1.e-12:
 
         custom_multiply = create_custom_multiply(H_L, H_l, H_r, H_R, H_Ll, H_lr, H_rR)
 
@@ -66,9 +72,11 @@ if __name__ == '__main__':
         eigenvalues, eigenvectors = eigsh(LinearOperator((dim_H, dim_H), matvec=custom_multiply), k=1, which='SA')
         # print(eigenvalues / system_size)
         # print(iter_count, eigenvalues[0] / system_size)  # ground state energy per site
-        gs_energy = eigenvalues[0] / system_size
+        gs_energy = gs_energy_new
+        gs_energy_new = eigenvalues[0] / system_size
+        print("%d\t%.14f" % (iter_count, gs_energy_new))
         with open(file_name, 'a') as f:
-            f.write('%d\t%.15f\n' % (iter_count, gs_energy))
+            f.write('%d\t%.15f\n' % (iter_count, gs_energy_new))
 
         psi_zero = eigenvectors[:, 0]  # ground state
         # psi_zero[np.abs(psi_zero) < 1.e-16] = 0
@@ -140,3 +148,4 @@ if __name__ == '__main__':
         H_rR = - t * (np.kron(c_up_dagger, c_up_r) + np.kron(c_up, c_up_dagger_r) + np.kron(c_down_dagger, c_down_r) + np.kron(c_down, c_down_dagger_r))
 
         system_size += 2
+        # iter_count += 1
