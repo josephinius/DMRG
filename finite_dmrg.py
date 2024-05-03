@@ -85,6 +85,7 @@ def extend(H_L, H_l, H_r, H_R, H_Ll, H_lr, H_rR, k):
     H_Ll = - t * (np.kron(c_up_dagger_l, c_up) + np.kron(c_up_l, c_up_dagger) + np.kron(c_down_dagger_l, c_down) + np.kron(c_down_l, c_down_dagger))
     H_rR = - t * (np.kron(c_up_dagger, c_up_r) + np.kron(c_up, c_up_dagger_r) + np.kron(c_down_dagger, c_down_r) + np.kron(c_down, c_down_dagger_r))
 
+    # Save H-s and c-s
     np.save(f'mem/H_L{k + 2}.npy', H_L)
     np.save(f'mem/H_R{k + 2}.npy', H_R)
 
