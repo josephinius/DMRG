@@ -3,7 +3,7 @@ from scipy.sparse.linalg import eigsh, LinearOperator
 from scipy.linalg import eigh
 from ncon import ncon
 
-from arnoldi_diag_demo import create_custom_multiply
+from infinite_dmrg import create_custom_multiply
 
 # Spin-1/2 operators
 
